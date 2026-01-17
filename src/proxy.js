@@ -5,12 +5,12 @@ export function proxy(request) {
 
   if (!isLogged) {
     const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirect", request.nextUrl.pathname);
+    loginUrl.searchParams.set("callBackUrl", request.nextUrl.pathname);
 
     return NextResponse.redirect(loginUrl);
   }
 }
 
 export const config = {
-  matcher: "/products/:path*",
+  matcher: "/add-product/:path*",
 };

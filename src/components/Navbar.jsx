@@ -1,33 +1,49 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import NavLink from "./NavLink";
-import { IoMdMenu } from "react-icons/io";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { IoMdMenu } from "react-icons/io";
+import NavLink from "./NavLink";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
-  const [isLogged, setIsLogged] = useState(false);
+  const [logged, setLogged] = useState(false);
 
   useEffect(() => {
-    const cookies = document.cookie.split("; ");
-    const authCookie = cookies.find((c) => c.startsWith("auth="));
-    setIsLogged(authCookie?.split("=")[1] === "true");
+    // initial check
+    const syncAuth = () => {
+      setLogged(document.cookie.includes("auth=true"));
+    };
+
+    syncAuth();
+
+    // listen for login / logout
+    window.addEventListener("authChange", syncAuth);
+
+    return () => {
+      window.removeEventListener("authChange", syncAuth);
+    };
   }, []);
 
   const handleLogout = () => {
-    document.cookie = "auth=false;";
-    setIsLogged(false);
-  };
+    document.cookie =
+      "auth=false; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure";
 
+    // notify navbar instantly
+    window.dispatchEvent(new Event("authChange"));
+    Swal.fire({
+      icon: "success",
+      title: "Logout successfully!",
+      showConfirmButton: false,
+      timer: 1200,
+    });
+  };
   const links = [
     { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" },
-    { label: "Blogs", href: "/blogs" },
     { label: "Products", href: "/products" },
     { label: "Add Products", href: "/add-product" },
-    { label: "Register", href: "/register" },
+    ...(!logged ? [{ label: "Register", href: "/register" }] : []),
   ];
 
   return (
@@ -39,34 +55,31 @@ const Navbar = () => {
             <div tabIndex={0} role="button" className="btn btn-ghost">
               <IoMdMenu />
             </div>
-            <ul className="menu menu-sm dropdown-content mt-3 w-52 bg-base-100 shadow rounded-box">
-              {links.map((link, i) => (
-                <li key={i}>
-                  <NavLink link={link} />
-                </li>
-              ))}
-            </ul>
           </div>
 
           <Link href="/">
-            <Image src="/logo.png" alt="Logo" width={100} height={40} />
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={100}
+              height={100}
+              className="w-38 max-h-7 h-auto"
+            />
           </Link>
         </div>
 
         {/* CENTER */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {links.map((link, i) => (
-              <li key={i}>
-                <NavLink link={link} />
-              </li>
+            {links.map((link, index) => (
+              <NavLink key={index} link={link}></NavLink>
             ))}
           </ul>
         </div>
 
         {/* RIGHT */}
         <div className="navbar-end">
-          {isLogged ? (
+          {logged ? (
             <button
               onClick={handleLogout}
               className="btn btn-outline btn-error"

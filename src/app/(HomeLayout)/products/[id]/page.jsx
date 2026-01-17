@@ -17,7 +17,9 @@ const ProductDetails = () => {
     // Fetch products from backend
     const fetchProduct = async () => {
       try {
-        const res = await fetch("http://localhost:4000/products");
+        const res = await fetch(
+          "https://product-next-server.vercel.app/products"
+        );
         const data = await res.json();
 
         // Find the product with the matching id

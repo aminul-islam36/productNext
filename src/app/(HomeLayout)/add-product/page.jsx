@@ -36,13 +36,16 @@ const AddProduct = () => {
 
     try {
       // Replace URL with your Express API endpoint
-      const res = await fetch("http://localhost:4000/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newProduct),
-      });
+      const res = await fetch(
+        "https://product-next-server.vercel.app/products",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newProduct),
+        }
+      );
 
       if (res.ok) {
         reset();
