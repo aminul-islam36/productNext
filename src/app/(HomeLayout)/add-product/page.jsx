@@ -1,10 +1,76 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+
 const AddProduct = () => {
-  // Handle form submission
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { register, handleSubmit, reset } = useForm();
+
+  // Check authentication
+  useEffect(() => {
+    const checkAuth = () => {
+      const cookies = document.cookie.split("; ");
+      const authCookie = cookies.find((c) => c.startsWith("auth="));
+      return authCookie?.split("=")[1] === "true";
+    };
+
+    const isAuth = checkAuth();
+    setIsAuthenticated(isAuth);
+    setIsLoading(false);
+
+    // If not authenticated, redirect to login with callback
+    if (!isAuth) {
+      const currentPath = window.location.pathname;
+      const redirectUrl = `/login?callBackUrl=${encodeURIComponent(currentPath)}`;
+      router.push(redirectUrl);
+    }
+
+    // Listen for auth changes
+    const handleAuthChange = () => {
+      const isAuth = checkAuth();
+      setIsAuthenticated(isAuth);
+
+      if (!isAuth) {
+        const currentPath = window.location.pathname;
+        const redirectUrl = `/login?callBackUrl=${encodeURIComponent(currentPath)}`;
+        router.push(redirectUrl);
+      }
+    };
+
+    window.addEventListener("authChange", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("authChange", handleAuthChange);
+    };
+  }, [router]);
+
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <span className="loading loading-spinner loading-lg"></span>
+          <p className="mt-4">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render the form if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p>Redirecting to login...</p>
+        </div>
+      </div>
+    );
+  }
   const handleProduct = async (data) => {
     const file = data.file[0];
     const formData = new FormData();
@@ -15,7 +81,7 @@ const AddProduct = () => {
       {
         method: "POST",
         body: formData,
-      }
+      },
     );
     const imgbbData = await imgbbRes.json();
 
@@ -36,16 +102,13 @@ const AddProduct = () => {
 
     try {
       // Replace URL with your Express API endpoint
-      const res = await fetch(
-        "https://product-next-server.vercel.app/products",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newProduct),
-        }
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newProduct),
+      });
 
       if (res.ok) {
         reset();

@@ -10,7 +10,7 @@ const ProductsPreview = () => {
 
   useEffect(() => {
     // Fetch products from Express API
-    fetch("https://product-next-server.vercel.app/products")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error fetching products:", err));

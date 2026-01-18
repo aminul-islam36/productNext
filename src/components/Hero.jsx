@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -25,7 +26,9 @@ const Hero = () => {
             </p>
 
             <div className="flex gap-4">
-              <button className="btn btn-primary">Explore Products</button>
+              <Link href="/products" className="btn btn-primary">
+                Explore Products
+              </Link>
               <button className="btn btn-outline">Learn More</button>
             </div>
           </div>

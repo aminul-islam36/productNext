@@ -23,23 +23,51 @@ const Login = () => {
     }
 
     if (email === "admin@gmail.com" && password === "1234") {
-      // 1️⃣ Set auth cookie
-      document.cookie =
-        "auth=true; path=/; max-age=86400; SameSite=Lax; Secure";
+      // Set auth cookie with environment-specific security
+      const isProduction = process.env.NODE_ENV === "production";
+      const cookieString = isProduction
+        ? "auth=true; path=/; max-age=86400; SameSite=Lax; Secure"
+        : "auth=true; path=/; max-age=86400; SameSite=Lax";
 
-      // 2️⃣ Notify Navbar instantly
+      document.cookie = cookieString;
+
+      // Notify Navbar instantly
       window.dispatchEvent(new Event("authChange"));
 
       Swal.fire({
         icon: "success",
         title: "Logged in successfully!",
         showConfirmButton: false,
-        timer: 1200,
+        timer: 1500,
       });
 
-      // 3️⃣ Redirect back (middleware aware)
-      const redirect = searchParams.get("callBackUrl") || "/";
-      router.push(redirect);
+      // Wait for cookie to be set and success message, then redirect
+      setTimeout(() => {
+        const redirect = searchParams.get("callBackUrl") || "/add-product";
+
+        // Verify cookie was actually set before redirecting
+        const cookieCheck = document.cookie.includes("auth=true");
+        if (!cookieCheck) {
+          console.error("Cookie was not set properly");
+          Swal.fire({
+            icon: "error",
+            title: "Login failed",
+            text: "Please try again",
+          });
+          return;
+        }
+
+        console.log("Redirecting to:", redirect);
+
+        // Use different redirect methods for production vs development
+        if (isProduction) {
+          // In production (Vercel), use window.location for reliable redirects
+          window.location.href = redirect;
+        } else {
+          // In development, use Next.js router
+          router.push(redirect);
+        }
+      }, 1600);
     } else {
       Swal.fire({
         icon: "error",

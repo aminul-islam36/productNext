@@ -55,7 +55,7 @@ const CallToAction = () => {
             placeholder="Your Name"
             value={formData.name}
             onChange={handleChange}
-            className="input w-full sm:w-1/2 flex-1"
+            className="input w-full"
           />
           <input
             type="email"
@@ -63,7 +63,7 @@ const CallToAction = () => {
             placeholder="Your Email"
             value={formData.email}
             onChange={handleChange}
-            className="input w-full sm:w-1/2 flex-1"
+            className="input w-full "
           />
           <button type="submit" className="btn btn-secondary">
             Submit

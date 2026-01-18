@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ProductNest 🛍️
 
-## Getting Started
+## Project Live Link
 
-First, run the development server:
+https://productnext-coral.vercel.app/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+A modern, full-stack product management platform built with Next.js that allows users to explore, manage, and add products with a clean and intuitive interface.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📋 Project Description
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+ProductNest is a comprehensive product management system that provides users with the ability to browse products, view detailed information, and manage inventory through a secure authentication system. The platform features a responsive design, fast performance, and seamless user experience across all devices.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Setup & Installation
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js (v18 or higher)
+- npm, yarn, pnpm, or bun
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation Steps
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clone the repository**
 
-## Deploy on Vercel
+   ```bash
+   git clone https://github.com/aminul-islam36/productNext.git
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Install dependencies**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. **Environment Setup**
+   Create a `.env.local` file in the root directory:
+
+   ```env
+   NEXT_PUBLIC_IMAGE_BB_KEY=your_imgbb_api_key
+   NEXT_PUBLIC_API_URL=your_backend_api_url
+   ```
+
+4. **Run the development server**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🗺️ Route Summary
+
+| Route            | Description                                       | Access Level              |
+| ---------------- | ------------------------------------------------- | ------------------------- |
+| `/`              | Homepage with hero, features, and product preview | Public                    |
+| `/products`      | Browse all available products                     | Public                    |
+| `/products/[id]` | View detailed product information                 | Public                    |
+| `/login`         | User authentication page                          | Public                    |
+| `/register`      | User registration page                            | Public                    |
+| `/add-product`   | Add new products to the catalog                   | Protected (Auth Required) |
+
+### ⚡ Performance & Technical
+
+- **Next.js 16**: Latest framework with App Router
+- **Fast Loading**: Optimized images and lazy loading
+- **SEO Friendly**: Proper meta tags and structure
+- **Type Safety**: Modern JavaScript with proper error handling
+- **Production Deployment**: Vercel-optimized build configuration
+
+### Responsive Design
+
+Built with a mobile-first approach using Tailwind CSS and DaisyUI components. The interface adapts seamlessly across devices with optimized layouts for mobile, tablet, and desktop viewports.
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 16, React 19, Tailwind CSS, DaisyUI
+- **Forms**: React Hook Form
+- **Icons**: React Icons, Lucide
+- **Alerts**: SweetAlert2
+- **Image Hosting**: ImgBB API
+- **Deployment**: Vercel

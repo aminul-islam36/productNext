@@ -27,8 +27,13 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    document.cookie =
-      "auth=false; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure";
+    // Clear auth cookie with environment-specific security
+    const isProduction = process.env.NODE_ENV === "production";
+    const cookieString = isProduction
+      ? "auth=false; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure"
+      : "auth=false; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
+
+    document.cookie = cookieString;
 
     // notify navbar instantly
     window.dispatchEvent(new Event("authChange"));
