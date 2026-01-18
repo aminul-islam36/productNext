@@ -55,13 +55,21 @@ const Navbar = () => {
     <div className="border-b border-gray-200">
       <div className="navbar bg-base-100 max-w-7xl mx-auto">
         {/* LEFT */}
+
         <div className="navbar-start">
-          <div className="dropdown lg:hidden">
-            <div tabIndex={0} role="button" className="btn btn-ghost">
+          <div className="dropdown">
+            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
               <IoMdMenu />
             </div>
+            <ul
+              tabIndex="-1"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            >
+              {links.map((link, index) => (
+                <NavLink key={index} link={link}></NavLink>
+              ))}
+            </ul>
           </div>
-
           <Link href="/">
             <Image
               src="/logo.png"

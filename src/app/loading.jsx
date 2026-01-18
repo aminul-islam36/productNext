@@ -49,7 +49,7 @@ export default function Loading() {
 
           {/* Right: Image Placeholder */}
           <div className="flex-1 w-full">
-            <Skeleton className="aspect-[4/3] w-full rounded-2xl shadow-xl" />
+            <Skeleton className="aspect-4/3 w-full rounded-2xl shadow-xl" />
           </div>
         </div>
       </main>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
@@ -110,6 +111,12 @@ const Login = () => {
             Login
           </button>
         </form>
+        <p className="mt-3">
+          Don't have an account?{" "}
+          <Link href="register" className="text-blue-500">
+            register Now
+          </Link>
+        </p>
       </div>
     </div>
   );
