@@ -24,7 +24,6 @@ const Login = () => {
     }
 
     if (email === "admin@gmail.com" && password === "1234") {
-      // Set auth cookie with environment-specific security
       const isProduction = process.env.NODE_ENV === "production";
       const cookieString = isProduction
         ? "auth=true; path=/; max-age=86400; SameSite=Lax; Secure"
@@ -32,7 +31,6 @@ const Login = () => {
 
       document.cookie = cookieString;
 
-      // Notify Navbar instantly
       window.dispatchEvent(new Event("authChange"));
 
       Swal.fire({
@@ -42,11 +40,9 @@ const Login = () => {
         timer: 1500,
       });
 
-      // Wait for cookie to be set and success message, then redirect
       setTimeout(() => {
-        const redirect = searchParams.get("callBackUrl") || "/add-product";
+        const redirect = searchParams.get("callBackUrl") || "/";
 
-        // Verify cookie was actually set before redirecting
         const cookieCheck = document.cookie.includes("auth=true");
         if (!cookieCheck) {
           console.error("Cookie was not set properly");
@@ -58,14 +54,11 @@ const Login = () => {
           return;
         }
 
-        console.log("Redirecting to:", redirect);
+        // console.log("Redirecting to:", redirect);
 
-        // Use different redirect methods for production vs development
         if (isProduction) {
-          // In production (Vercel), use window.location for reliable redirects
           window.location.href = redirect;
         } else {
-          // In development, use Next.js router
           router.push(redirect);
         }
       }, 1600);
@@ -112,7 +105,7 @@ const Login = () => {
           </button>
         </form>
         <p className="mt-3">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="register" className="text-blue-500">
             register Now
           </Link>
